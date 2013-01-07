@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+*********************************************************************************************
+	Buildfile for SWC files
+*********************************************************************************************
+-->
+<project name="hexagonlib.dev" default="00. Init" basedir="..">
+
+	<property file="${env.properties}"/>
+
+	<!-- application information -->
+	<property name="app.name"			value="hexagonlib"/>
+	<property name="app.pubname"		value="hexagonlib"/>
+	<property name="app.version"		value="0.5.2"/>
+	<property name="app.releasestage"	value="Beta"/>
+	<property name="app.copyright"		value="Copyright(c) Hexagon Star Softworks"/>
+
+	<!-- swc properties -->
+	<property name="swc.targetname"		value="hexagonlib.swc"/>
+
+	<!-- version of the used flex sdk -->
+	<property name="sdk.version"		value="4.6.0"/>
+
+	<!-- version of the targetted flash player -->
+	<property name="fpv.version"		value="11.1"/>
+	<property name="swf.version"		value="14"/>
+
+	<!-- default project folders -->
+	<property name="path.src"			value="${basedir}/src/code"/>
+	<property name="path.libs.swc"		value="${basedir}/src/swc"/>
+	<property name="path.bin"			value="${basedir}/bin"/>
+	<property name="path.pub"			value="${basedir}/pub"/>
+
+	<!-- workspace & sdk pathes -->
+	<property name="workspace"			value="${eclipse.workspace}"/>
+	<property name="flex.sdk.basepath"	value="${flex.sdk.path}"/>
+	<property name="sdk"				value="${flex.sdk.basepath}"/>
+	<property name="FLEX_HOME"			value="${sdk}"/>
+	<property name="path.cfg.flex"		value="${sdk}/frameworks/flex-config.xml"/>
+	<property name="path.cfg.air"		value="${sdk}/frameworks/air-config.xml"/>
+	<property name="path.buildnumber"	value="bld/build.number"/>
+
+	<!-- flextasks definitions -->
+	<taskdef resource="flexTasks.tasks" classpath="${sdk}/ant/lib/flexTasks.jar"/>
+
+
+	<!-- ==================================================================================== -->
+	<!-- TARGETS                                                                              -->
+	<!-- ==================================================================================== -->
+	
+	<target name="00. Init" description="">
+		<echoproperties/>
+	</target>
+	
+	<target name="01. Full Build" description="Builds a distribution package incl. fat SWC and API docs.">
+		<clean/>
+		<prepareBuild/>
+		<compileSWC/>
+		<createDocs/>
+		<createFatDocs/>
+		<includeFatDocs/>
+		<cleanPub/>
+		<packDistribution/>
+		<clean/>
+		<refresh/>
+	</target>
+	
+	<target name="02. Clean" description="Cleans the output folder.">
+		<clean/>
+		<refresh/>
+	</target>
+	
+	<target name="03. Compile SWC" description="Builds a distribution version.">
+		<prepareBuild/>
+		<compileSWC/>
+		<refresh/>
+	</target>
+	
+	<target name="04. Create Docs" description="Creates the API docs.">
+		<createDocs/>
+		<refresh/>
+	</target>
+	
+	<target name="05. Create Fat Docs" description="Creates fat API docs and includes them into the SWC.">
+		<createFatDocs/>
+		<includeFatDocs/>
+		<refresh/>
+	</target>
+	
+	<target name="06. Pack" description="Creates a zipped version for distribution.">
+		<cleanPub/>
+		<packDistribution/>
+		<refresh/>
+	</target>
+	
+	
+	<!-- ==================================================================================== -->
+	<!-- MACRODEFS                                                                            -->
+	<!-- ==================================================================================== -->
+
+	<macrodef name="prepareBuild">
+		<sequential>
+			<buildnumber file="${path.buildnumber}"/>
+			<tstamp>
+				<format property="build.date" pattern="dd-MMMM-yyyy HH:mm" unit="minute" locale="en"/>
+			</tstamp>
+			<echo message="*** ${ant.project.name} version: ${app.version} build #${build.number}, ${build.date} ***" level="info"/>
+			<generateAppInfo buildnr="${build.number}" builddate="${build.date}" releasestage="${app.releasestage}"/>
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="generateAppInfo">
+		<attribute name="buildnr" default=""/>
+		<attribute name="builddate" default=""/>
+		<attribute name="releasestage" default=""/>
+		<sequential>
+			<echo message="Generating HexagonLib.as ..." level="info"/>
+			<echo file="${path.src}/com/hexagonstar/HexagonLib.as" append="false">
+				<![CDATA[/*
+ * hexagonlib - Multi-Purpose ActionScript 3 Library.
+ *       __    __
+ *    __/  \__/  \__    __
+ *   /  \__/HEXAGON \__/  \
+ *   \__/  \__/  LIBRARY _/
+ *            \__/  \__/
+ *
+ * Licensed under the MIT License
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package com.hexagonstar
+{
+	/**
+	 * Contains constants that describe version information about the library.
+	 */
+	public final class HexagonLib
+	{
+		//-----------------------------------------------------------------------------------------
+		// Constants
+		//-----------------------------------------------------------------------------------------
+		
+		public static const NAME:String				= "${app.name}";
+		public static const VERSION:String			= "${app.version}";
+		public static const BUILD:String			= "@{buildnr}";
+		public static const RELEASE_STAGE:String	= "@{releasestage}";
+		public static const DATE:String				= "@{builddate}";
+		public static const COPYRIGHT:String		= "${app.copyright}";
+	}
+}]]>
+			</echo>
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="clean">
+		<sequential>
+			<echo message="Cleaning bin folder ..." level="info"/>
+			<delete includeemptydirs="true">
+				<fileset dir="${path.bin}" includes="**/*" excludes="**/.svn"/>
+			</delete>
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="compileSWC">
+		<sequential>
+			<echo message="Compiling ${app.name} SWC ..." level="info"/>
+			<compc
+				output="${path.bin}/swc/${swc.targetname}"
+				target-player="${fpv.version}"
+				swf-version="${swf.version}"
+				debug="false"
+				optimize="false"
+				strict="true">
+				<load-config filename="${path.cfg.air}"/>
+				<source-path path-element="${path.src}"/>
+				<include-sources dir="${path.src}" includes="*"/>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs/air" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
+					<include name="framework.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/locale/en_US" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${path.libs.swc}" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+			</compc>
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="createDocs">
+		<sequential>
+			<echo message="Creating API docs ..." level="info"/>
+			<asdoc
+				output="${path.bin}/doc"
+				lenient="true"
+				strict="true"
+				warnings="true"
+				main-title="hexagonlib API Documentation"
+				window-title="hexagonlib API Documentation"
+				footer="Copyright (c) 2012 Hexagon Star Softworks"
+				left-frameset-width="220"
+				failonerror="true">
+				<load-config filename="${path.cfg.air}"/>
+				<compiler.source-path path-element="${path.src}"/>
+				<doc-sources path-element="${path.src}"/>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs/air" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
+					<include name="framework.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/locale/en_US" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${path.libs.swc}" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+			</asdoc>
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="createFatDocs">
+		<sequential>
+			<echo message="Creating fat API docs ..." level="info"/>
+			<asdoc
+				output="${path.bin}/tmp"
+				lenient="true"
+				strict="true"
+				warnings="true"
+				keep-xml="true"
+				skip-xsl="true"
+				main-title="hexagonlib API Documentation"
+				window-title="hexagonlib API Documentation"
+				footer="Copyright (c) 2012 Hexagon Star Softworks"
+				left-frameset-width="220"
+				failonerror="true">
+				<load-config filename="${path.cfg.air}"/>
+				<compiler.source-path path-element="${path.src}"/>
+				<doc-sources path-element="${path.src}"/>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs/air" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/libs" append="true">
+					<include name="framework.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${FLEX_HOME}/frameworks/locale/en_US" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+				<compiler.external-library-path dir="${path.libs.swc}" append="true">
+					<include name="*.swc"/>
+				</compiler.external-library-path>
+			</asdoc>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="includeFatDocs">
+		<sequential>
+			<echo message="Including fat API docs into SWC ..." level="info"/>
+			<zip destfile="${path.bin}/swc/${swc.targetname}" update="true">
+				<zipfileset dir="${path.bin}/tmp/tempdita" prefix="docs">
+					<include name="*.*"/>
+					<exclude name="ASDoc_Config.xml"/>
+					<exclude name="overviews.xml"/>
+				</zipfileset>
+			</zip>
+			<delete dir="${path.bin}/tmp"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="cleanPub">
+		<sequential>
+			<echo message="Cleaning publish folder ..." level="info"/>
+			<delete includeemptydirs="true">
+				<fileset dir="${path.pub}" includes="**/*" excludes="**/.svn"/>
+			</delete>
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="packDistribution">
+		<sequential>
+			<echo message="Packing distribution file ..." level="info"/>
+			<zip destfile="${path.pub}/${app.pubname}_dist.zip"
+				basedir="${path.bin}"
+				excludes="**/.svn"
+				update="false"
+				compress="true"/>
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="refresh">
+		<sequential>
+			<eclipse.refreshLocal resource="${basedir}" depth="infinite"/>
+		</sequential>
+	</macrodef>
+
+</project>
