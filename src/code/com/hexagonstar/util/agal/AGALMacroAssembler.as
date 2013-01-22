@@ -37,6 +37,8 @@ package com.hexagonstar.util.agal
 
 
 	/**
+	 * TODO Obsolete Version!
+	 * 
 	 * <p>
 	 * A richer version of the AGALMiniAssembler. The MacroAssembler is a macro based
 	 * assembly substitution "compiler". Basically it adds some nice, more human readable

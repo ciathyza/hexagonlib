@@ -38,6 +38,8 @@ package com.hexagonstar.util.agal
 
 	/**
 	 * An optimized version of Adobe's AGAL mini assembler.
+	 * 
+	 * TODO Obsolete Version!
 	 */
 	public class AGAL
 	{
