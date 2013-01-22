@@ -1,5 +1,4 @@
-
-				/*
+/*
  * hexagonlib - Multi-Purpose ActionScript 3 Library.
  *       __    __
  *    __/  \__/  \__    __
@@ -26,23 +25,39 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.hexagonstar
+package com.hexagonstar.constants
 {
 	/**
-	 * Contains constants that describe version information about the library.
+	 * A class that provides constant values for the 'RectangleUtil.fit' method.
 	 */
-	public final class HexagonLib
+	public class RectangleScaleMode
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants
 		//-----------------------------------------------------------------------------------------
 		
-		public static const NAME:String				= "hexagonlib";
-		public static const VERSION:String			= "0.5.2";
-		public static const BUILD:String			= "942";
-		public static const RELEASE_STAGE:String	= "Beta";
-		public static const DATE:String				= "22-January-2013 16:07";
-		public static const COPYRIGHT:String		= "Copyright(c) Hexagon Star Softworks";
+		/** Specifies that the rectangle is not scaled, but simply centered within the 
+		 *  specified area. */
+		public static const NONE:String = "none";
+		
+		/** Specifies that the rectangle fills the specified area without distortion 
+		 *  but possibly with some cropping, while maintaining the original aspect ratio. */
+		public static const NO_BORDER:String = "noBorder";
+		
+		/** Specifies that the entire rectangle will be scaled to fit into the specified 
+		 *  area, while maintaining the original aspect ratio. This might leave empty bars at
+		 *  either the top and bottom, or left and right. */
+		public static const SHOW_ALL:String = "showAll";
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/** Indicates whether the given scale mode string is valid. */
+		public static function isValid(scaleMode:String):Boolean
+		{
+			return scaleMode == NONE || scaleMode == NO_BORDER || scaleMode == SHOW_ALL;
+		}
 	}
 }
-			

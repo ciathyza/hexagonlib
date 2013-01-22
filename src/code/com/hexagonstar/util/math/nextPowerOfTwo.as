@@ -35,8 +35,9 @@ package com.hexagonstar.util.math
 	 */
 	public function nextPowerOfTwo(number:int):int
 	{
+		if (number > 0 && (number & (number - 1)) == 0) return number;
 		var r:int = 1;
-		while (r < number) r *= 2;
+		while (r < number) r <<= 1;
 		return r;
 	}
 }
