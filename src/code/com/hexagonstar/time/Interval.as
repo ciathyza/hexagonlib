@@ -28,7 +28,8 @@
 package com.hexagonstar.time{	import com.hexagonstar.types.IDisposable;	import flash.events.TimerEvent;		/**	 * To be used instead of flash.utils.setInterval and flash.utils.setTimeout functions.	 * 	 * Advantages over setInterval/setTimeout are:	 * <ul>	 *     <li>Ability to stop and start intervals without redefining.</li>	 *     <li>Change the time delay, callback and arguments without redefining.</li>	 *     <li>Included repeatCount for intervals that only need to fire finitely.</li>	 *     <li>setInterval and setTimeout return an object instead of interval id for	 *     better OOP structure.</li>	 *     <li>Built in events/event dispatcher.</li>	 * </ul>	 * 	 * @example	 * <pre>	 * package	 * {	 * 	import flash.display.MovieClip;	 * 	import com.hexagonstar.time.Interval;	 * 		 * 	public class Example extends MovieClip	 * 	{	 * 		private var _interval:Interval;	 * 			 * 		public function Example()	 *		{	 *			_interval = Interval.setInterval(onInterval, 1000, "Hexagon");	 * 			_interval.repeatCount = 3;	 *			_interval.start();	 * 		}	 *			 *		private function onInterval(name:String):void	 *		{	 *			trace(name);	 *		}	 *	 }	 * }	 * </pre>	 */	public final class Interval extends PreciseTimer implements IDisposable	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
-		//-----------------------------------------------------------------------------------------				private var _callBack:Function;		private var _args:Array;				
+		//-----------------------------------------------------------------------------------------				protected var _callBack:Function;		protected var _args:Array;		protected var _autoDispose:Boolean;
+				
 		//-----------------------------------------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------------------------------------				/**		 * Creates a new Interval instance.
@@ -36,7 +37,8 @@ package com.hexagonstar.time{	import com.hexagonstar.types.IDisposable;	impo
 		 * @param delay
 		 * @param repeatCount
 		 * @param callBack
-		 * @param args		 */		public function Interval(delay:Number, repeatCount:int, callBack:Function, args:Array)		{			super(delay, repeatCount);						_callBack = callBack;			_args = args;			addEventListener(TimerEvent.TIMER, onTimer, false, 0, true);		}		
+		 * @param args		 */		public function Interval(delay:Number, repeatCount:int, callBack:Function, args:Array)		{			super(delay, repeatCount);						_callBack = callBack;			_args = args;
+			_autoDispose = true;			addEventListener(TimerEvent.TIMER, onTimer, false, 0, true);		}		
 		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -55,6 +57,22 @@ package com.hexagonstar.time{	import com.hexagonstar.types.IDisposable;	impo
 		//-----------------------------------------------------------------------------------------
 		// Accessors
 		//-----------------------------------------------------------------------------------------				/**		 * The function to execute after the specified delay.		 */		public function get callBack():Function		{			return _callBack;		}		public function set callBack(v:Function):void		{			_callBack = v;		}				/**		 * The arguments to be passed to the call back function when executed.		 */		public function get arguments():Array		{			return _args;		}		public function set arguments(v:Array):void		{			_args = v;		}				
+		/**
+		 * Determines whether the interval is disposed automatically after it's done.
+		 * 
+		 * @default true		 */
+		public function get autoDispose():Boolean
+		{
+			return _autoDispose;
+		}
+		public function set autoDispose(v:Boolean):void
+		{
+			_autoDispose = v;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Event Handlers
-		//-----------------------------------------------------------------------------------------				private function onTimer(e:TimerEvent):void		{			_callBack.apply(null, _args);		}	}}
+		//-----------------------------------------------------------------------------------------				protected function onTimer(e:TimerEvent):void		{			_callBack.apply(null, _args);			if (_autoDispose && _currentCount == _repeatCount)
+			{
+				dispose();			}		}	}}
