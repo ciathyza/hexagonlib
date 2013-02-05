@@ -42,13 +42,13 @@ package com.hexagonstar.time{	import com.hexagonstar.types.IDisposable;	impo
 		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
-		//-----------------------------------------------------------------------------------------				/**		 * Runs a function at a specified periodic interval.		 *		 * @param callBack The function to execute after specified delay.		 * @param delay The time in milliseconds between calls.
-		 * @param repeatCount How many times the interval should repeat. 0 means endless.		 * @param autoStart If true starts the timeout automatically.
-		 * @param args The arguments to be passed to the callback function when executed.		 * @return An Interval reference.		 */		public static function setInterval(callBack:Function, delay:Number, repeatCount:int = 0,
+		//-----------------------------------------------------------------------------------------				/**		 * Runs a function at a specified periodic interval.		 *		 * @param delay The time in milliseconds between calls.
+		 * @param callBack The function to execute after specified delay.		 * @param repeatCount How many times the interval should repeat. 0 means endless.		 * @param autoStart If true starts the timeout automatically.
+		 * @param args The arguments to be passed to the callback function when executed.		 * @return An Interval reference.		 */		public static function setInterval(delay:Number, callBack:Function, repeatCount:int = 0,
 			autoStart:Boolean = false, ...args):Interval		{
 			var i:Interval = new Interval(delay, repeatCount, callBack, args);			if (autoStart) i.start();
-			return i;		}						/**		 * Runs a function at a specified periodic interval. Acts identically		 * like setInterval() except setTimeOut() defaults repeatCount to 1.		 * 		 * @param callBack The function to execute after specified delay.		 * @param delay The time in milliseconds between calls.
-		 * @param autoStart If true starts the timeout automatically.		 * @param args The arguments to be passed to the callback function when executed.		 * @return An Interval reference.		 */		public static function setTimeOut(callBack:Function, delay:Number,
+			return i;		}						/**		 * Runs a function at a specified periodic interval. Acts identically		 * like setInterval() except setTimeOut() defaults repeatCount to 1.		 * 		 * @param delay The time in milliseconds between calls.
+		 * @param callBack The function to execute after specified delay.		 * @param autoStart If true starts the timeout automatically.		 * @param args The arguments to be passed to the callback function when executed.		 * @return An Interval reference.		 */		public static function setTimeOut(delay:Number, callBack:Function,
 			autoStart:Boolean = false, ...args):Interval		{
 			var i:Interval = new Interval(delay, 1, callBack, args);
 			if (autoStart) i.start();			return i;		}						/**

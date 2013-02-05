@@ -60,13 +60,13 @@ package com.hexagonstar.time
 		/**
 		 * Addsa new interval that runs a function at a specified periodic interval.
 		 *
-		 * @param callBack The function to execute after specified delay.
 		 * @param delay The time in milliseconds between calls.
+		 * @param callBack The function to execute after specified delay.
 		 * @param repeatCount How many times the interval should repeat. 0 means endless.
 		 * @param args The arguments to be passed to the callback function when executed.
 		 * @return An Interval reference.
 		 */
-		public function addInterval(callBack:Function, delay:Number, repeatCount:int = 0,
+		public function addInterval(delay:Number, callBack:Function, repeatCount:int = 0,
 			...args):Interval
 		{
 			var i:Interval = new Interval(delay, repeatCount, callBack, args);
@@ -78,12 +78,12 @@ package com.hexagonstar.time
 		/**
 		 * Adds a new timeout to the sequence.
 		 * 
-		 * @param callBack The function to execute after specified delay.
 		 * @param delay The time in milliseconds between calls.
+		 * @param callBack The function to execute after specified delay.
 		 * @param args The arguments to be passed to the callback function when executed.
 		 * @return An Interval reference.
 		 */
-		public function addTimeOut(callBack:Function, delay:Number, ...args):Interval
+		public function addTimeOut(delay:Number, callBack:Function, ...args):Interval
 		{
 			var i:Interval = new Interval(delay, 1, callBack, args);
 			_intervals.push(i);
