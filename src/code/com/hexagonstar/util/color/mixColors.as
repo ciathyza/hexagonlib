@@ -27,24 +27,18 @@
  */
 package com.hexagonstar.util.color
 {
-	import com.hexagonstar.types.RGB;
-	
-	
 	/**
 	 * Mixes two colors and returns the hexadecimal color value of the result.
 	 * 
-	 * @param color1
-	 * @param color2
-	 * @param ratio
+	 * @param color1 bottom color.
+	 * @param color2 top color.
+	 * @param alpha Alpha value (0.0 - 1.0) of color2.
 	 * @return uint
 	 */
-    public function mixColors(color1:uint, color2:uint, ratio:Number):uint
+    public function mixColors(color1:uint, color2:uint, alpha:Number):uint
 	{
-		ratio = ratio < 0.0 ? 0.0 : ratio > 1.0 ? 1.0 : ratio;
-		var c1:RGB = colorHexToRGB(color1);
-		var c2:RGB = colorHexToRGB(color2);
-		return colorRGBToHex(new RGB(c1.r * (1 - ratio) + c2.r * ratio,
-			c1.g * (1 - ratio) + c2.g * ratio,
-			c1.b * (1 - ratio) + c2.b * ratio));
+		return (((color2 >> 16 & 0xFF) * (1 - alpha) + (color1 >> 16 & 0xFF) * alpha) << 16)
+			+ (((color2 >> 8 & 0xFF) * (1 - alpha) + (color1 >> 8 & 0xFF) * alpha) << 8)
+			+ ((color2 & 0xFF) * (1 - alpha) + (color1 & 0xFF) * alpha);
 	}
 }
