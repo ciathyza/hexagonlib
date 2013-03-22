@@ -94,7 +94,7 @@ package com.hexagonstar.tween.plugins
 		{
 			if (isNumber(value)) return false;
 			
-			var useRadians:Boolean = value['useRadians'] && value['useRadians'] == true;
+			var useRadians:Boolean = (value['useRadians'] as Boolean) && (value['useRadians'] as Boolean) == true;
 			for (var p:String in value)
 			{
 				if (p != "useRadians")

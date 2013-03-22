@@ -95,7 +95,7 @@ package com.hexagonstar.tween.plugins
 			
 			_target = target;
 			_tween = tween;
-			_initVal = _target[propertyName];
+			_initVal = _target[propertyName] as Boolean;
 			_visible = Boolean(value);
 			return true;
 		}

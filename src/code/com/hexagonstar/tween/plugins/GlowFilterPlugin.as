@@ -114,8 +114,8 @@ package com.hexagonstar.tween.plugins
 			initFilter(value, new GlowFilter(0xFFFFFF, 0, 0, 0,
 				value['strength'] || 1,
 				value['quality'] || 2,
-				value['inner'],
-				value['knockout']), _propertyNames);
+				(value['inner'] as Boolean),
+				(value['knockout'] as Boolean)), _propertyNames);
 			return true;
 		}
 	}
