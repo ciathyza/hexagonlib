@@ -62,7 +62,7 @@ package com.hexagonstar.util.reflection
 					row += "\t" + i + ". " + v[i] + "\n";
 				}
 			}
-			else if (p is String || p is Number || p is int || p is uint || p is Boolean || p is null)
+			else if (p is String || p is Number || p is int || p is uint || p is Boolean || p == null)
 			{
 				row += k + ": " + p + "\n";
 			}

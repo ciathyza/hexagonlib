@@ -668,23 +668,22 @@ package com.hexagonstar.util.image
 				writeBits(_bitcode[pos]);
 			}
 			// Encode ACs
-			const end0pos:int = 63;
-			for (; (end0pos > 0) && (_du[end0pos] == 0); end0pos--)
+			var endPos:int = 63;
+			for (; (endPos > 0) && (_du[endPos] == 0); endPos--)
 			{
-			}
-			;
+			};
 			// end0pos = first element in reverse order !=0
-			if ( end0pos == 0)
+			if ( endPos == 0)
 			{
 				writeBits(EOB);
 				return DC;
 			}
 			var i:int = 1;
 			var lng:int;
-			while ( i <= end0pos )
+			while ( i <= endPos )
 			{
 				var startpos:int = i;
-				for (; (_du[i] == 0) && (i <= end0pos); ++i)
+				for (; (_du[i] == 0) && (i <= endPos); ++i)
 				{
 				}
 				var nrzeroes:int = i - startpos;
@@ -700,7 +699,7 @@ package com.hexagonstar.util.image
 				writeBits(_bitcode[pos]);
 				i++;
 			}
-			if ( end0pos != I63 )
+			if ( endPos != I63 )
 			{
 				writeBits(EOB);
 			}

@@ -158,7 +158,7 @@ package com.hexagonstar.signals
 			if (!e || !e.bubbles) return;
 			var currentTarget:Object = target;
 			
-			while (currentTarget && currentTarget.hasOwnProperty("parent") && (currentTarget = currentTarget["parent"]))
+			while (currentTarget && currentTarget.hasOwnProperty("parent") && (currentTarget == currentTarget["parent"]))
 			{
 				if (currentTarget is IBubbleEventHandler)
 				{

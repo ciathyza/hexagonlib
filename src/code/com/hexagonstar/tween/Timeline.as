@@ -641,7 +641,7 @@ package com.hexagonstar.tween
 		 * @param timeOrLabel time in seconds (or frame if the timeline is frames-based) or label to skip to. For example, myTimeline.goto(2) will skip to 2-seconds into a timeline, and myTimeline.goto("myLabel") will skip to wherever "myLabel" is. 
 		 * @param suppressEvents If true, no events or callbacks will be triggered as the "virtual playhead" moves to the new position (onComplete, onUpdate, onReverseComplete, etc. of this timeline and any of its child tweens/timelines won't be triggered, nor will any of the associated events be dispatched) 
 		 */
-		public function goto(timeOrLabel:*, suppressEvents:Boolean = true):void
+		public function goTo(timeOrLabel:*, suppressEvents:Boolean = true):void
 		{
 			setTotalTime(parseTimeOrLabel(timeOrLabel), suppressEvents);
 		}

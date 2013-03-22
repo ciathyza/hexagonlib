@@ -1036,7 +1036,7 @@ package com.hexagonstar.tween
 				}
 			}
 			
-			if (_overwriteMode > 1 && cachedVO && (siblings = masterList[target]) && siblings.length > 1)
+			if (_overwriteMode > 1 && cachedVO && (siblings == masterList[target]) && siblings.length > 1)
 			{
 				if (overwriteManager['manageOverwrites'](this, voLookup, siblings, _overwriteMode))
 				{
