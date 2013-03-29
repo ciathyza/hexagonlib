@@ -1,5 +1,8 @@
 package com.hexagonstar.util.potrace.geom
 {
+	import com.hexagonstar.types.PointInt;
+	
+	
 	public class Path
 	{
 		public var area:int;

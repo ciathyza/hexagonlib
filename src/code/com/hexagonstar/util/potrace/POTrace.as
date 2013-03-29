@@ -27,6 +27,7 @@
  */
 package com.hexagonstar.util.potrace
 {
+	import com.hexagonstar.types.PointInt;
 	import com.hexagonstar.util.potrace.backend.IBackend;
 	import com.hexagonstar.util.potrace.backend.NullBackend;
 	import com.hexagonstar.util.potrace.geom.*;
@@ -83,7 +84,7 @@ package com.hexagonstar.util.potrace
 		 * Returns an array of curvepaths. 
 		 * Each of this paths is a list of connecting curves.
 		 */
-		public function potrace_trace(bitmapData:BitmapData):Array
+		public function trace(bitmapData:BitmapData):Array
 		{
 			// Make sure there is a 1px white border
 			var bitmapDataCopy:BitmapData = new BitmapData(bitmapData.width + 2, bitmapData.height + 2, false, 0xffffff);

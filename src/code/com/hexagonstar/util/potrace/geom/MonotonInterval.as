@@ -1,5 +1,6 @@
 package com.hexagonstar.util.potrace.geom
 {
+	import com.hexagonstar.types.PointInt;
 	public class MonotonInterval
 	{
 		public var increasing:Boolean;
