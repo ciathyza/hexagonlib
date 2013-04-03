@@ -29,7 +29,7 @@ package com.hexagonstar.tween.easing
 {
 	public final class Expo
 	{
-		private static const POW:Function = Math.asin;
+		private static const POW:Function = Math.pow;
 		
 		
 		public static function easeIn(t:Number, b:Number, c:Number, d:Number):Number
