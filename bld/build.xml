@@ -11,8 +11,8 @@
 	<!-- application information -->
 	<property name="app.name"			value="hexagonlib"/>
 	<property name="app.pubname"		value="hexagonlib"/>
-	<property name="app.version"		value="0.5.2"/>
-	<property name="app.releasestage"	value="Beta"/>
+	<property name="app.version"		value="0.5.3"/>
+	<property name="app.releasestage"	value="Public"/>
 	<property name="app.copyright"		value="Copyright(c) Hexagon Star Softworks"/>
 
 	<!-- swc properties -->
@@ -56,9 +56,9 @@
 		<clean/>
 		<prepareBuild/>
 		<compileSWC/>
-		<createDocs/>
+		<!-- <createDocs/>
 		<createFatDocs/>
-		<includeFatDocs/>
+		<includeFatDocs/> -->
 		<cleanPub/>
 		<packDistribution/>
 		<clean/>
